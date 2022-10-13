@@ -103,6 +103,7 @@ namespace PasswordManager.Repository
                             children = (from b in g.ToList()
                                         select new
                                         {
+                                            id = b.id,
                                             username = b.username,
                                             password = b.password,
                                             realPassword = DecryptPw(b.password),

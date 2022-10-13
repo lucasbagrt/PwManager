@@ -21,7 +21,7 @@ class AppService {
             .then(response => {
                 return response.data;
             });
-    }
+    }   
 }
 
 export default new AppService();

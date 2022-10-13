@@ -7,6 +7,5 @@ public class CreateRequest
     [Required]
     public string username { get; set; }
     [Required]
-    public string password { get; set; }
-    public Role Role { get; set; }
+    public string password { get; set; }    
 }

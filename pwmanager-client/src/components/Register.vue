@@ -1,11 +1,12 @@
 <template>
   <div class="login-dark">
-    <Form @submit="handleLogin" :validation-schema="schema">
-      <h2 class="sr-only">Login</h2>
-      <div class="illustration">
-        <i class="icon ion-ios-locked-outline"></i>
+    <Form @submit="handleRegister" :validation-schema="schema">
+      <h2 class="sr-only">Register</h2>
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <Field name="name" type="text" class="form-control" />
+        <ErrorMessage name="name" class="error-feedback" />
       </div>
-
       <div class="form-group">
         <label for="username">Usuario</label>
         <Field name="username" type="text" class="form-control" />
@@ -16,16 +17,13 @@
         <Field name="password" type="password" class="form-control" />
         <ErrorMessage name="password" class="error-feedback" />
       </div>
-      <div class="form-group">        
-        <router-link to="/register" style="padding: 0" class="nav-link">Não possui uma conta?</router-link>        
-      </div>
       <div class="form-group">
         <button class="btn btn-primary btn-block" :disabled="loading">
           <span
             v-show="loading"
             class="spinner-border spinner-border-sm"
           ></span>
-          <span>Login</span>
+          <span>Registrar</span>
         </button>
       </div>
       <div class="form-group">
@@ -40,9 +38,10 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import userService from "@/services/user-service";
 
 export default {
-  name: "Login",
+  name: "Register",
   components: {
     Form,
     Field,
@@ -50,6 +49,7 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
+      name: yup.string().required("Nome é obrigatorio!"),
       username: yup.string().required("Usuario é obrigatorio!"),
       password: yup.string().required("Senha é obrigatoria!"),
     });
@@ -60,25 +60,16 @@ export default {
       schema,
     };
   },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
-  },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push("/home");
-    }
-  },
   methods: {
-    handleLogin(user) {
-      this.loading = true;
-
-      this.$store.dispatch("auth/login", user).then(
-        () => {
-          this.$router.push("/Home");
-        },
-        (error) => {
+    handleRegister(user) {
+      userService
+        .save(user)
+        .then((response) => {
+          console.log(response);
+          window.alert("Usuario cadastrado com sucesso");
+          this.$router.push("/Login");
+        })
+        .catch((error) => {
           this.loading = false;
           this.message =
             (error.response &&
@@ -86,8 +77,7 @@ export default {
               error.response.data.message) ||
             error.message ||
             error.toString();
-        }
-      );
+        });
     },
   },
 };

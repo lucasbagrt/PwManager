@@ -56,7 +56,7 @@ namespace PasswordManager.Repository
                     name = model.name,
                     username = model.username,
                     password = BCrypt.Net.BCrypt.HashPassword(model.password),
-                    Role = model.Role
+                    Role = Role.User
                 };
                 User user = _mapper.Map<User>(vo);
                 _context.Users.Add(user);

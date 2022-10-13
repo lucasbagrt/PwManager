@@ -150,6 +150,15 @@
           </span>
         </button>
       </span>
+      <span v-else-if="props.column.field == 'actions'">
+        <button
+          type="button"
+          @click="deleteRow(props.row.id)"
+          class="btn btn-danger"
+        >
+          <i class="fa fa-trash"></i>
+        </button>
+      </span>
       <span v-else>
         {{ props.formattedRow[props.column.field] }}
       </span>
@@ -206,6 +215,20 @@ export default {
         .findByName(params)
         .then((response) => (this.password.app_id = response.id));
     },
+    deleteRow(id) {
+      if (confirm("Deseja mesmo excluir esta senha?")) {
+        pwService
+          .delete(id)
+          .then((response) => {
+            console.log(response);
+            window.alert("Sucesso");
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => this.listAll());
+      }
+    },
     insert() {
       this.successInsert = false;
       console.log(this.password);
@@ -213,14 +236,15 @@ export default {
         .post(this.password)
         .then((response) => {
           console.log(response);
+          this.successInsert = true;
         })
         .catch((error) => {
-          console.log(error);          
+          console.log(error);
+          window.alert(error);
         })
         .finally(() => this.listAll());
 
-      this.clearForm();
-      this.successInsert = true;
+      this.clearForm();      
     },
     clearForm() {
       this.password = {};
@@ -232,9 +256,9 @@ export default {
     },
     listAllAutoComplete() {
       appService
-      .findAllAutoComplete()
-      .then((response) => (this.applications = response));
-    }
+        .findAllAutoComplete()
+        .then((response) => (this.applications = response));
+    },
   },
   components: {
     Form,

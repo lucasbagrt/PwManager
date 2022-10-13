@@ -26,7 +26,17 @@ class UserService {
         return response.data;
       });
   }
-
+  save(user) {
+    return axios
+      .post(API_URL, {
+        name: user.name,
+        username: user.username,
+        password: user.password,        
+      }, { headers: authHeader() })
+      .then(response => {        
+        return response.data;
+      });
+  }
   logout() {
     localStorage.removeItem('user');
   } 

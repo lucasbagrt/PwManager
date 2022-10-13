@@ -51,7 +51,7 @@ namespace PasswordManager.Controllers
         }
 
         [HttpPost]
-        [Authorize(Role.Admin)]
+        [AllowAnonymous]
         public async Task<ActionResult<UserVO>> Create([FromBody] CreateRequest vo)
         {
             if (vo == null) return BadRequest();

@@ -16,7 +16,7 @@ namespace PasswordManager.Controllers
         {
             _repository = repository ??
                 throw new ArgumentNullException(nameof(repository));
-        }        
+        }
 
         [HttpGet]
         [Authorize]
@@ -42,12 +42,12 @@ namespace PasswordManager.Controllers
             var pw = await _repository.FindById(id);
             if (pw == null) return NotFound();
             return Ok(pw);
-        }       
+        }
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<PasswordVO>> Create([FromBody] SaveRequest vo)
         {
-            if (vo == null) return BadRequest();
+            if (vo == null || vo.app_id == 0) return BadRequest();
             var pw = await _repository.Create(vo);
             return Ok(pw);
         }

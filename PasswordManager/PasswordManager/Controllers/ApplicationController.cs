@@ -32,7 +32,7 @@ namespace PasswordManager.Controllers
             return Ok(Passwords);
         }
         [HttpGet("{id}")]
-        [Authorize(Role.Admin)]
+        [Authorize]
         public async Task<ActionResult<ApplicationVO>> FindById(int id)
         {
             var app = await _repository.FindById(id);
@@ -40,7 +40,7 @@ namespace PasswordManager.Controllers
             return Ok(app);
         }
         [HttpGet("[action]")]
-        [Authorize(Role.Admin)]
+        [Authorize]
         public async Task<ActionResult<ApplicationVO>> FindByName(string name)
         {
             var app = await _repository.FindByName(name);

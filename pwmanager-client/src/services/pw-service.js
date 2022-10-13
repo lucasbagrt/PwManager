@@ -44,7 +44,7 @@ class PwService {
   }
   delete(id) {
     return axios
-      .delete(API_URL, + '/' + id, { headers: authHeader() })
+      .delete(API_URL + '/' + id, { headers: authHeader() })
       .then(response => {        
         return response.data;
       });
